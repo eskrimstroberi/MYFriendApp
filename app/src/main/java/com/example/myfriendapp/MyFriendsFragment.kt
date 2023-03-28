@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.my_friends_fragment.*
 
 
 class MyFriendsFragment : Fragment () {
     private var fabAddFriend : FloatingActionButton? = null
     private var listTeman : List<MyFriend>? = null
+    private var listMyFriends : RecyclerView? = null
     private var db: AppDatabase? = null
     private var myFriendDao: MyFriendDao? = null
     companion object {
@@ -33,6 +34,7 @@ class MyFriendsFragment : Fragment () {
     initView()
     }
     private fun initView() {
+        listMyFriends = activity?.findViewById(R.id.listMyFriends)
         fabAddFriend = activity?.findViewById(R.id.fabAddFriend)
         fabAddFriend?.setOnClickListener {(activity as MainActivity).tampilMyFriendsAddFragment() }
         ambilDataTeman()
@@ -55,10 +57,12 @@ class MyFriendsFragment : Fragment () {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
     private fun tampilTeman() {
-        listMyFriends.layoutManager = LinearLayoutManager(activity)
-        listMyFriends.adapter = MyFriendAdapter(requireActivity(), listTeman as ArrayList<MyFriend>)
+        listMyFriends?.layoutManager = LinearLayoutManager(activity)
+        listMyFriends?.adapter = MyFriendAdapter(requireActivity(), listTeman!! as ArrayList<MyFriend>)
     }
     override fun onDestroy() {
         super.onDestroy()
+        fabAddFriend = null
+        listMyFriends = null
     }
 }
